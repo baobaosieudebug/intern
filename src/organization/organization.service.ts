@@ -17,6 +17,7 @@ import { EditOrganizationDTO } from './dto/edit-organization.dto';
 import { RandomString } from '../common/utils/random-string';
 import { OrganizationRO } from './ro/organization.ro';
 import { UserRO } from '../user/ro/user.ro';
+import { ProjectRepository } from '../project/project.repository';
 
 @Injectable()
 export class OrganizationService {
@@ -25,6 +26,7 @@ export class OrganizationService {
     private readonly repo: OrganizationRepository,
     @Inject(forwardRef(() => ProjectService))
     private readonly projectService: ProjectService,
+    private readonly projectRepo: ProjectRepository,
     private readonly userService: UserService,
   ) {}
 
@@ -155,4 +157,13 @@ export class OrganizationService {
   //   organization.logo = file.originalname;
   //   return this.mappingOrganizationRO(organization);
   // }
+  async getListProject(payload, code: string) {
+    const organization = await this.getOneOrFail(payload, code);
+    try {
+      return await this.projectService.getListProject(organization.id);
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
 }

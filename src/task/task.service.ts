@@ -1,10 +1,18 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { OrganizationService } from '../organization/organization.service';
 import { ProjectService } from '../project/project.service';
 import { TaskRepository } from './task.respository';
 import { AddTaskDTO } from './dto/add-task.dto';
 import { TaskEntity } from './task.entity';
 import { TaskRO } from './ro/task.ro';
+import { EditTaskDTO } from './dto/edit-task.dto';
 
 @Injectable()
 export class TaskService {
@@ -76,31 +84,38 @@ export class TaskService {
     }
   }
 
-  // async delete(id: number){;
-  //   try {
-  //     return await this.repo.delete(id);
-  //   } catch (e) {
-  //     this.logger.error(e);
-  //     throw new InternalServerErrorException();
-  //   }
-  // }
+  async delete(payload, code: string) {
+    const isOwner = await this.repo.isOwner(code, payload.id);
+    const task = await this.getOneByCode(code);
+    if (!isOwner) {
+      throw new ForbiddenException('Forbidden');
+    }
+    try {
+      task.isDeleted = payload.id;
+      await this.repo.update(task.id, task);
+      return task.id;
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
 
-  // async getOneById(id: number) {
-  //   return await this.repo.getById(id);
-  // }
-  //
-  // async getOneByIdOrFail(id: number) {
-  //   const task = await this.getOneById(id);
-  //   if (!task) {
-  //     throw new NotFoundException('Task Not Found');
-  //   }
-  //   return task;
-  // }
-  //
-  // async getOneByCode(code: string) {
-  //   return await this.repo.getByCode(code);
-  // }
-  //
+  async getOneById(id: number) {
+    return await this.repo.getById(id);
+  }
+
+  async getOneByIdOrFail(id: number) {
+    const task = await this.getOneById(id);
+    if (!task) {
+      throw new NotFoundException('Task Not Found');
+    }
+    return task;
+  }
+
+  async getOneByCode(code: string) {
+    return await this.repo.getByCode(code);
+  }
+
   // async getOneByCodeOrFail(code: string) {
   //   const task = await this.getOneByCode(code);
   //   if (!task) {
@@ -141,17 +156,21 @@ export class TaskService {
   //     throw new InternalServerErrorException();
   //   }
   // }
-  // async edit(id: number, dto: EditTaskDTO): Promise<HandleTaskRO> {
-  //   const old = await this.getOneByIdOrFail(id);
-  //   try {
-  //     const task = await this.repo.merge(old, dto);
-  //     await this.repo.update(id, task);
-  //     return this.handleTaskResponse(task);
-  //   } catch (e) {
-  //     this.logger.error(e);
-  //     throw new InternalServerErrorException();
-  //   }
-  // }
+
+  async edit(payload, projectCode: string, id: number, dto: EditTaskDTO): Promise<TaskRO> {
+    const project = await this.projectService.getOneByCodeOrFail(projectCode);
+    await this.projectService.isProjectExist(payload, projectCode);
+    const old = await this.getOneByIdOrFail(id);
+    await this.isTaskExist(dto.code, project.id);
+    try {
+      const task = await this.repo.merge(old, dto);
+      await this.repo.update(id, task);
+      return this.mappingTaskRO(task);
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
 
   // async removeTask(projectId: number, code: string): Promise<HandleTaskRO> {
   //   const checkTask = await this.getOneByCodeOrFail(code);

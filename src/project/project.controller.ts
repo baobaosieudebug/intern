@@ -62,6 +62,12 @@ export class ProjectController {
   }
 
   @ApiOkResponse({ description: 'Success' })
+  @Get(':code/admins')
+  async getListAdmin(@Payload() payload, @Param('code') code: string): Promise<UserRO[]> {
+    return await this.projectService.getListAdmin(payload, code);
+  }
+
+  @ApiOkResponse({ description: 'Success' })
   @Put(':code')
   @UsePipes(ValidationPipe)
   async edit(@Payload() payload, @Param('code') code: string, @Body() dto: EditProjectDTO): Promise<ProjectRO> {

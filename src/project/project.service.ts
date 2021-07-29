@@ -19,6 +19,7 @@ import { AddProjectDTO } from './dto/add-project.dto';
 import { EditProjectDTO } from './dto/edit-project.dto';
 import { ProjectRO } from './ro/project.ro';
 import { UserRO } from '../user/ro/user.ro';
+import { RoleRepository } from '../auth/repository/role.repository';
 
 @Injectable()
 export class ProjectService {
@@ -31,6 +32,7 @@ export class ProjectService {
     private readonly orgRepo: OrganizationRepository,
     private readonly userProjectRepo: UserProjectRepository,
     private readonly userService: UserService,
+    private readonly roleRepo: RoleRepository,
   ) {}
 
   async getOneByCode(code: string): Promise<ProjectEntity> {
@@ -214,6 +216,32 @@ export class ProjectService {
       project.isDeleted = project.id;
       await this.repo.update(project.id, project);
       return project.id;
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getListProject(id: number) {
+    try {
+      const oldArray = await this.repo.getListProject(id);
+      return this.mappingListProjectRO(oldArray);
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getListAdmin(payload, code: string):Promise<UserRO[]> {
+    await this.getOneByCodeOrFail(code);
+    const isOwner = await this.repo.isOwner(code, payload.id);
+    if (!isOwner) {
+      throw new ForbiddenException('Forbidden');
+    }
+    const roleCode = 'admin';
+    try {
+      const roleId = await this.roleRepo.getIdOfRoleByCode(roleCode);
+      return this.userService.getListAdmin(roleId);
     } catch (e) {
       this.logger.error(e);
       throw new InternalServerErrorException();

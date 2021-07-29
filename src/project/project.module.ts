@@ -7,10 +7,11 @@ import { ProjectController } from './project.controller';
 import { ProjectService } from './project.service';
 import { JwtModule } from '@nestjs/jwt';
 import { OrganizationModule } from '../organization/organization.module';
+import { RoleRepository } from '../auth/repository/role.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ProjectRepository]),
+    TypeOrmModule.forFeature([ProjectRepository, RoleRepository]),
     forwardRef(() => UserModule),
     forwardRef(() => TaskModule),
     forwardRef(() => OrganizationModule),

@@ -18,6 +18,8 @@ import { SelfUserRO } from './ro/self-user.ro';
 import { UserRO } from './ro/user.ro';
 import { EditUserDTO } from './dto/edit-user.dto';
 import * as bcrypt from 'bcrypt';
+import { UserRoleRepository } from './repository/user-role.repository';
+import { UserRoleEntity } from './entities/user-role.entity';
 
 @Injectable()
 export class UserService {
@@ -29,6 +31,7 @@ export class UserService {
     private readonly mailService: MailService,
     private readonly userOrgRepo: UserOrganizationRepository,
     private readonly userProjectRepo: UserProjectRepository,
+    private readonly userRoleRepo: UserRoleRepository,
   ) {}
 
   async isOwner(payload, username: string): Promise<boolean> {
@@ -73,6 +76,16 @@ export class UserService {
     return newArray;
   }
 
+  async mappingUserRoleToRO(oldArray: UserRoleEntity[]): Promise<UserRO[]> {
+    const newArray: UserRO[] = [];
+    for (let i = 0; i < oldArray.length; i++) {
+      const user = await this.getOneById(oldArray[i].userId);
+      const userRO = await this.mappingUserRO(user);
+      newArray.push(userRO);
+    }
+    return newArray;
+  }
+
   async getOneByUsername(username: string) {
     return await this.repo.getOneByUsername(username);
   }
@@ -105,6 +118,16 @@ export class UserService {
     try {
       const userProjectArray = await this.userProjectRepo.getListUser(projectId);
       return this.mappingUserProjectToRO(userProjectArray);
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getListAdmin(roleId: number): Promise<UserRO[]> {
+    try {
+      const adminArray = await this.userRoleRepo.getListAdmin(roleId);
+      return this.mappingUserRoleToRO(adminArray);
     } catch (e) {
       this.logger.error(e);
       throw new InternalServerErrorException();
