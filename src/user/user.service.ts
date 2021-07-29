@@ -16,6 +16,8 @@ import { UserProjectRepository } from './repository/user-project.repository';
 import { UserRepository } from './repository/user.repository';
 import { SelfUserRO } from './ro/self-user.ro';
 import { UserRO } from './ro/user.ro';
+import { EditUserDTO } from './dto/edit-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -226,29 +228,19 @@ export class UserService {
     }
   }
 
-  //
-  // async edit(id: number, dto: EditUserDTO): Promise<UserRO> {
-  //   const old = await this.getOneByIdOrFail(id);
-  //   try {
-  //     dto.password = await bcrypt.hash(dto.password, 12);
-  //     const user = await this.repo.merge(old, dto);
-  //     await this.repo.update(id, user);
-  //     return this.handleUserResponse(user);
-  //   } catch (e) {
-  //     this.logger.error(e);
-  //     throw new InternalServerErrorException();
-  //   }
-  // }
-  //
-  // async delete(id: number): Promise<UserRO> {
-  //   const user = await this.getOneByIdOrFail(id);
-  //   try {
-  //     user.isDeleted = user.id;
-  //     await this.repo.update(id, user);
-  //     return this.handleUserResponse(user);
-  //   } catch (e) {
-  //     this.logger.error(e);
-  //     throw new InternalServerErrorException();
-  //   }
-  // }
+  async edit(payload, id: number, dto: EditUserDTO): Promise<UserRO> {
+    const old = await this.getOneByIdOrFail(id);
+    if (payload.id !== id) {
+      throw new ForbiddenException('Forbidden');
+    }
+    try {
+      dto.password = await bcrypt.hash(dto.password, 12);
+      const user = await this.repo.merge(old, dto);
+      await this.repo.update(id, user);
+      return this.mappingUserRO(user);
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
 }
