@@ -66,4 +66,10 @@ export class OrganizationController {
   async delete(@Payload() payload, @Param('code') code: string): Promise<number> {
     return await this.organizationService.delete(payload, code);
   }
+
+  @ApiOkResponse({ description: 'Success' })
+  @Get(':code/projects')
+  async getListProject(@Payload() payload, @Param('code') code: string) {
+    return await this.organizationService.getListProject(payload, code);
+  }
 }
