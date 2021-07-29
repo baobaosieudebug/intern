@@ -204,16 +204,19 @@ export class ProjectService {
     }
   }
 
-  // async delete(id: string) {
-  //   const project = await this.getOneByCode(id);
-  //   try {
-  //     return await this.repo.delete(project.id);
-  //     // project.isDeleted = project.id;
-  //     // await this.repo.update(id, project);
-  //     // return this.mappingProjectRO(project);
-  //   } catch (e) {
-  //     this.logger.error(e);
-  //     throw new InternalServerErrorException();
-  //   }
-  // }
+  async delete(payload, code: string) {
+    const project = await this.getOneByCode(code);
+    const isOwner = await this.repo.isOwner(code, payload.id);
+    if (!isOwner) {
+      throw new ForbiddenException('Forbidden');
+    }
+    try {
+      project.isDeleted = project.id;
+      await this.repo.update(project.id, project);
+      return project.id;
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
 }
