@@ -134,17 +134,18 @@ export class OrganizationService {
     }
   }
 
-  // async delete(id: number): Promise<number> {
-  //   const organization = await this.getOneByIdOrFail(id);
-  //   try {
-  //     organization.isDeleted = organization.id;
-  //     await this.repo.update(id, organization);
-  //     return id;
-  //   } catch (e) {
-  //     this.logger.error(e);
-  //     throw new InternalServerErrorException();
-  //   }
-  // }
+  async delete(payload, code: string): Promise<number> {
+    await this.isOwner(payload);
+    const organization = await this.getOneByCode(code);
+    try {
+      organization.isDeleted = organization.id;
+      await this.repo.update(organization.id, organization);
+      return organization.id;
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
 
   // async uploadLogo(req, file): Promise<OrganizationRO> {
   //   const organization = await this.isOwner(req);
