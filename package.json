@@ -17,8 +17,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "heroku-postbuild":"npm install --only=dev --no shrinkwrap && npm run build--max-old-space-size=8192"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@casl/ability": "^5.3.1",
@@ -39,6 +38,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "dotenv": "^8.6.0",
+    "express": "^4.17.1",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
     "nodemailer": "^6.6.2",
