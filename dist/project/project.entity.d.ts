@@ -1,0 +1,30 @@
+import { OrganizationEntity } from '../organization/organization.entity';
+import { UserEntity } from '../user/entities/user.entity';
+import { TaskEntity } from '../task/task.entity';
+import { CategoryEntity } from '../category/category.entity';
+import { TypeEntity } from '../type/type.entity';
+import { StatusEntity } from '../status/status.entity';
+import { VersionEntity } from '../version/version.entity';
+import { UserProjectEntity } from '../user/entities/user-project.entity';
+export declare class ProjectEntity {
+    id: number;
+    name: string;
+    code: string;
+    description: string;
+    logo: string;
+    isDeleted: number;
+    organizationId: number;
+    createById: number;
+    adminId: number;
+    createdAt: Date;
+    updatedAt: Date;
+    createBy: UserEntity;
+    admin: UserEntity;
+    categories: CategoryEntity[];
+    types: TypeEntity[];
+    statuses: StatusEntity[];
+    versions: VersionEntity[];
+    tasks: TaskEntity[];
+    userProject: UserProjectEntity;
+    organization: OrganizationEntity;
+}

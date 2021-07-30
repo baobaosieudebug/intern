@@ -1,0 +1,31 @@
+import { OrganizationService } from '../organization/organization.service';
+import { ProjectService } from '../project/project.service';
+import { TaskRepository } from './task.respository';
+import { AddTaskDTO } from './dto/add-task.dto';
+import { TaskEntity } from './task.entity';
+import { TaskRO } from './ro/task.ro';
+import { EditTaskDTO } from './dto/edit-task.dto';
+import { AuthService } from '../auth/auth.service';
+import { ActionRepository } from '../auth/repository/action.repository';
+import { ResourceRepository } from '../auth/repository/resource.repository';
+export declare class TaskService {
+    private readonly repo;
+    private readonly orgService;
+    private readonly projectService;
+    private readonly authService;
+    private readonly actionRepo;
+    private readonly resourceRepo;
+    private readonly logger;
+    constructor(repo: TaskRepository, orgService: OrganizationService, projectService: ProjectService, authService: AuthService, actionRepo: ActionRepository, resourceRepo: ResourceRepository);
+    mappingTaskRO(task: TaskEntity): Promise<TaskRO>;
+    mappingListTaskRO(oldArray: TaskEntity[]): Promise<TaskRO[]>;
+    getAll(payload: any, projectCode: string): Promise<TaskRO[]>;
+    isTaskExist(code: string, projectId: number): Promise<void>;
+    isExistPermission(actionId: number, resourceId: number, roleId: number): Promise<void>;
+    create(payload: any, projectCode: string, dto: AddTaskDTO): Promise<TaskRO>;
+    delete(payload: any, code: string): Promise<number>;
+    getOneById(id: number): Promise<TaskEntity>;
+    getOneByIdOrFail(id: number): Promise<TaskEntity>;
+    getOneByCode(code: string): Promise<TaskEntity>;
+    edit(payload: any, projectCode: string, id: number, dto: EditTaskDTO): Promise<TaskRO>;
+}
