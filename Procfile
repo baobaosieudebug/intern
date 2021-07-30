@@ -1,1 +1,1 @@
-worker:node src/main.ts
+web:node main.js
