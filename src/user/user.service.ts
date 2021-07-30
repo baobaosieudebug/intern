@@ -266,4 +266,13 @@ export class UserService {
       throw new InternalServerErrorException();
     }
   }
+
+  async getRoleById(id: number) {
+    try {
+      return this.userRoleRepo.getRoleById(id);
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
 }

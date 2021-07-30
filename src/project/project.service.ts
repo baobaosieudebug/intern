@@ -232,7 +232,7 @@ export class ProjectService {
     }
   }
 
-  async getListAdmin(payload, code: string):Promise<UserRO[]> {
+  async getListAdmin(payload, code: string): Promise<UserRO[]> {
     await this.getOneByCodeOrFail(code);
     const isOwner = await this.repo.isOwner(code, payload.id);
     if (!isOwner) {
