@@ -36,20 +36,6 @@ export class TaskController {
     return await this.taskService.create(payload, projectCode, dto);
   }
 
-  // @ApiOkResponse({ description: 'Success' })
-  // @Get(':id')
-  // async getTaskByIdOrFail(@Param('id') id: number): Promise<GetTaskRO> {
-  //   const task = await this.taskService.getOneByIdOrFail(id);
-  //   return this.taskService.mappingTaskRO(task);
-  // }
-
-  // @ApiOkResponse({ description: 'Success' })
-  // @Get('code/:code')
-  // async getOneTaskByCode(@Param('code') code: string): Promise<GetTaskRO> {
-  //   const task = await this.taskService.getOneByCodeOrFail(code);
-  //   return this.taskService.mappingTaskRO(task);
-  // }
-
   @ApiOkResponse({ description: 'Success' })
   @Put(':id')
   @UsePipes(ValidationPipe)

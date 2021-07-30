@@ -109,7 +109,6 @@ export class AuthService {
       email: user.email,
       role: role.roleId,
     };
-    console.log(payload);
     const token = jwt.sign(payload, 'SECRET', { expiresIn: 60000 });
     return token;
   }
