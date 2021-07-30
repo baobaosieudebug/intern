@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  forwardRef,
   HttpService,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -30,6 +32,7 @@ export class AuthService {
     private readonly httpService: HttpService,
     private readonly userService: UserService,
     private readonly userRepo: UserRepository,
+    @Inject(forwardRef(() => OrganizationService))
     private readonly orgService: OrganizationService,
     private readonly permissionRepo: PermissionRepository,
     private readonly actionRepo: ActionRepository,
@@ -138,6 +141,15 @@ export class AuthService {
     await this.orgService.isOwner(payload);
     try {
       return await this.addPermission(payload, data);
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async isExistPermission(actionId: number, resourceId: number, roleId: number) {
+    try {
+      return await this.permissionRepo.isExistPer(actionId, resourceId, roleId);
     } catch (e) {
       this.logger.error(e);
       throw new InternalServerErrorException();
