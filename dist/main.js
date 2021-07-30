@@ -19,7 +19,11 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, swagger);
     swagger_1.SwaggerModule.setup('api', app, document);
-    await app.listen(process.env.PORT || 3002);
+    const host = '0.0.0.0';
+    const port = process.env.PORT || 3000;
+    app.listen(port, host, function () {
+        console.log('Server started.......');
+    });
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
