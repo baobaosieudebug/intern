@@ -1,12 +1,10 @@
 import {
   BaseEntity,
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { ProjectEntity } from '../../project/project.entity';
 import { UserEntity } from './user.entity';
@@ -22,10 +20,10 @@ export class UserProjectEntity extends BaseEntity {
   @Column({ name: 'project_id' })
   projectId: number;
 
-  @CreateDateColumn({ nullable: true })
+  @Column({ nullable: true })
   attend: Date;
 
-  @UpdateDateColumn({ nullable: true })
+  @Column({ nullable: true })
   updatedAt: Date;
 
   @ManyToOne(() => ProjectEntity, (project) => project.userProject, { onUpdate: 'CASCADE' })

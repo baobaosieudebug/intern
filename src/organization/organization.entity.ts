@@ -1,15 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProjectEntity } from '../project/project.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserOrganizationEntity } from '../user/entities/user-organization.entity';
@@ -47,10 +36,10 @@ export class OrganizationEntity {
   @Column({ type: 'varchar', nullable: false })
   country: string;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @Column({ name: 'updated_at' })
   updatedAt: Date;
 
   @Column({ name: 'owner_id', nullable: true })

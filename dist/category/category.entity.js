@@ -31,20 +31,11 @@ __decorate([
     __metadata("design:type", String)
 ], CategoryEntity.prototype, "description", void 0);
 __decorate([
-    typeorm_1.CreateDateColumn({
-        name: 'created_at',
-        type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP(6)',
-    }),
+    typeorm_1.Column({ name: 'created_at' }),
     __metadata("design:type", Date)
 ], CategoryEntity.prototype, "createdAt", void 0);
 __decorate([
-    typeorm_1.UpdateDateColumn({
-        name: 'updated_at',
-        type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP(6)',
-        onUpdate: 'CURRENT_TIMESTAMP(6)',
-    }),
+    typeorm_1.Column({ name: 'updated_at' }),
     __metadata("design:type", Date)
 ], CategoryEntity.prototype, "updatedAt", void 0);
 __decorate([

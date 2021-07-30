@@ -56,11 +56,11 @@ __decorate([
     __metadata("design:type", Number)
 ], UserEntity.prototype, "isDeleted", void 0);
 __decorate([
-    typeorm_1.CreateDateColumn({ name: 'created_at' }),
+    typeorm_1.Column({ name: 'created_at' }),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "createdAt", void 0);
 __decorate([
-    typeorm_1.UpdateDateColumn({ name: 'updated_at' }),
+    typeorm_1.Column({ name: 'updated_at' }),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "updatedAt", void 0);
 __decorate([

@@ -1,12 +1,10 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { OrganizationEntity } from '../../organization/organization.entity';
 import { PermissionEntity } from './permission.entity';
@@ -32,10 +30,10 @@ export class RoleEntity {
   @Column({ name: 'updated_by', nullable: true })
   updateBy: number;
 
-  @CreateDateColumn({ type: 'datetime', name: 'created_at' })
+  @Column({ type: 'datetime', name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'datetime', name: 'updated_at' })
+  @Column({ type: 'datetime', name: 'updated_at' })
   updatedAt: Date;
 
   @OneToMany(() => PermissionEntity, (permission) => permission.role)

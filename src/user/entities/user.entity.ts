@@ -1,12 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  OneToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
 import { ProjectEntity } from '../../project/project.entity';
 import { TaskEntity } from '../../task/task.entity';
 import { OrganizationEntity } from '../../organization/organization.entity';
@@ -43,10 +35,10 @@ export class UserEntity {
   @Column({ name: 'is_deleted', type: 'varchar', default: 0 })
   isDeleted: number;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @Column({ name: 'updated_at' })
   updatedAt: Date;
 
   @OneToOne(() => OrganizationEntity, (organization: OrganizationEntity) => organization.user)

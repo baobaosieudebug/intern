@@ -28,7 +28,7 @@ let DatabaseModule = DatabaseModule_1 = class DatabaseModule {
                         password: configService.get('db.password'),
                         database: configService.get('db.database'),
                         entities: ['dist/**/*.entity{.ts,.js}'],
-                        synchronize: false,
+                        synchronize: true,
                         logging: configService.get('db.logging'),
                     }),
                 }),

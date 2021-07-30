@@ -1,13 +1,4 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { OrganizationEntity } from '../../organization/organization.entity';
 import { UserEntity } from './user.entity';
 
@@ -29,10 +20,10 @@ export class UserOrganizationEntity extends BaseEntity {
   })
   active: boolean;
 
-  @CreateDateColumn({ nullable: true })
+  @Column({ nullable: true })
   attend: Date;
 
-  @UpdateDateColumn({ nullable: true })
+  @Column({ nullable: true })
   updatedAt: Date;
 
   @ManyToOne(() => OrganizationEntity, (organization) => organization.userOrganization, { onUpdate: 'CASCADE' })

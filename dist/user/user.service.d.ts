@@ -35,7 +35,7 @@ export declare class UserService {
     getListAdmin(roleId: number): Promise<UserRO[]>;
     getListUserByDomain(payload: any): Promise<UserRO[]>;
     isSameProject(id: number, userProjectArray: UserProjectEntity[]): Promise<void>;
-    getOneWithOwner(payload: any, username: string): Promise<SelfUserRO | UserRO>;
+    getOneWithOwner(payload: any, username: string): Promise<UserRO | SelfUserRO>;
     encryptCipheriv(data: any): string;
     decryptCipheriv(hash: any): any;
     invite(payload: any): Promise<any>;

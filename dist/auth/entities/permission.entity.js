@@ -45,11 +45,11 @@ __decorate([
     __metadata("design:type", Number)
 ], PermissionEntity.prototype, "updateBy", void 0);
 __decorate([
-    typeorm_1.CreateDateColumn({ type: 'datetime', name: 'created_at' }),
+    typeorm_1.Column({ type: 'datetime', name: 'created_at' }),
     __metadata("design:type", Date)
 ], PermissionEntity.prototype, "createdAt", void 0);
 __decorate([
-    typeorm_1.UpdateDateColumn({ type: 'datetime', name: 'updated_at' }),
+    typeorm_1.Column({ type: 'datetime', name: 'updated_at' }),
     __metadata("design:type", Date)
 ], PermissionEntity.prototype, "updatedAt", void 0);
 __decorate([

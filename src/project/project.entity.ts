@@ -1,16 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { OrganizationEntity } from '../organization/organization.entity';
 import { UserEntity } from '../user/entities/user.entity';
@@ -53,10 +41,10 @@ export class ProjectEntity {
   @Column({ name: 'admin_id', nullable: true, default: null })
   adminId: number;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @Column({ name: 'updated_at' })
   updatedAt: Date;
 
   @OneToOne(() => UserEntity, (user: UserEntity) => user.project)
